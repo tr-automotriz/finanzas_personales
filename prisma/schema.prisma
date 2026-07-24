@@ -1,0 +1,75 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+}
+
+enum TransactionType {
+  income
+  expense
+}
+
+enum TransactionSource {
+  manual
+  import
+}
+
+model Category {
+  id           String            @id @default(cuid())
+  name         String
+  type         TransactionType
+  color        String            @default("#6366f1")
+  createdAt    DateTime          @default(now())
+  transactions Transaction[]
+  budgets      Budget[]
+
+  @@unique([name, type])
+}
+
+model Transaction {
+  id         String             @id @default(cuid())
+  amount     Float
+  type       TransactionType
+  date       DateTime
+  note       String?
+  source     TransactionSource  @default(manual)
+  createdAt  DateTime           @default(now())
+  category   Category           @relation(fields: [categoryId], references: [id])
+  categoryId String
+  goal       Goal?              @relation(fields: [goalId], references: [id])
+  goalId     String?
+
+  @@index([date])
+  @@index([categoryId])
+  @@index([goalId])
+}
+
+model Budget {
+  id          String   @id @default(cuid())
+  month       String // formato "YYYY-MM"
+  limitAmount Float
+  category    Category @relation(fields: [categoryId], references: [id])
+  categoryId  String
+  createdAt   DateTime @default(now())
+
+  @@unique([categoryId, month])
+}
+
+model Goal {
+  id           String        @id @default(cuid())
+  name         String
+  targetAmount Float
+  deadline     DateTime?
+  createdAt    DateTime      @default(now())
+  transactions Transaction[]
+}
