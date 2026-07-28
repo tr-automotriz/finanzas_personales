@@ -13,6 +13,7 @@ const DEFAULT_CATEGORIES: { name: string; type: "income" | "expense"; color: str
   { name: "Salud", type: "expense", color: "#ef4444" },
   { name: "Ropa", type: "expense", color: "#eab308" },
   { name: "Ahorro", type: "expense", color: "#14b8a6" },
+  { name: "Trabajo", type: "expense", color: "#64748b" },
   { name: "Sin categorizar", type: "expense", color: "#6b7280" },
 ];
 
