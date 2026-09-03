@@ -14,6 +14,9 @@ export function Header({ email }: { email: string }) {
         <Link href="/importar" className="text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100">
           Importar
         </Link>
+        <a href="/api/export" className="text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100">
+          Exportar
+        </a>
         <form action={logout}>
           <button
             type="submit"
