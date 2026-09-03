@@ -42,6 +42,14 @@ export default async function MovimientosPage({
     return `/movimientos?${usp.toString()}`;
   };
 
+  const exportHref = (() => {
+    const usp = new URLSearchParams();
+    Object.entries(params).forEach(([k, v]) => {
+      if (v) usp.set(k, v);
+    });
+    return `/api/export?${usp.toString()}`;
+  })();
+
   return (
     <div className="flex flex-col gap-4">
       <h1 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50">Movimientos</h1>
@@ -92,7 +100,15 @@ export default async function MovimientosPage({
         </button>
       </form>
 
-      <p className="text-xs text-zinc-400">{total} movimiento(s)</p>
+      <div className="flex items-center justify-between">
+        <p className="text-xs text-zinc-400">{total} movimiento(s)</p>
+        <a
+          href={exportHref}
+          className="text-xs font-medium text-zinc-500 underline hover:text-zinc-900 dark:hover:text-zinc-100"
+        >
+          Exportar CSV
+        </a>
+      </div>
 
       <ul className="flex flex-col gap-2">
         {transactions.map((t) => (
